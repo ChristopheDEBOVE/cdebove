@@ -5,10 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>christophedebove</title>
+    
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="christophedebove.styles.css" rel="stylesheet" />
+    
+    
 </head>
 
 <body>
@@ -25,6 +28,44 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <script>
+        window.getDimensions = function() {
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        };
+        document.onkeydown = function(evt) {
+console.log(evt);
+            window.KeyBoardDotNetRef.invokeMethodAsync("CurrentKeyDown",
+                 evt.code
+            );
+            // if (evt.ctrlKey && evt.keyCode == 90) {
+            //     alert("Ctrl-Z");
+            // }
+        };
+        window.setKeyBoardRef = function (dotNetObjRef) {
+            console.log(dotNetObjRef);
+            window.KeyBoardDotNetRef = dotNetObjRef;
+        }
+        function ResizeCanvas() {
+            var canvas = document.querySelector('canvas');
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            return { width: canvas.width, height: canvas.height };
+        }
+    </script>
+    <style>
+        canvas {
+            background-color: #ffffff;
+            display: block;
+            position: fixed;
+        }
+    </style>
+    <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
 </body>
 
 </html>
