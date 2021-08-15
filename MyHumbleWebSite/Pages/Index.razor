@@ -1,0 +1,38 @@
+﻿@page "/"
+@inject IJSRuntime jsRuntime
+@code {
+    private static System.Timers.Timer aTimer;
+    private Ball _ball;
+    public KeyBoard KeyBoard = new ();
+    
+    public void StartTimer()
+    {
+        aTimer = new System.Timers.Timer(10);
+        aTimer.Elapsed += Tick;
+        aTimer.Enabled = true;
+    }
+
+    public void Tick(Object source, System.Timers.ElapsedEventArgs e)
+    { 
+        _ball?.SetDirection( KeyBoard.CurrentDirection);
+        _ball?.Roll();
+        InvokeAsync(StateHasChanged);
+    }
+    protected override void OnInitialized()
+    {
+        StartTimer();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
+        var browserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
+        if (_ball == null)
+            _ball = new Ball(browserDimension.Width / 2, browserDimension.Height / 2);
+    }
+}
+
+@if (_ball != null)
+{
+    <Grid  Ball="@_ball"></Grid>    
+}

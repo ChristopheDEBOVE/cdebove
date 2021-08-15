@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "christophedebove", "christophedebove\christophedebove.csproj", "{38A98A99-6AA0-44A3-8A08-B86875E95D05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHumbleWebSite", "MyHumbleWebSite\MyHumbleWebSite.csproj", "{38A98A99-6AA0-44A3-8A08-B86875E95D05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyHumbleWebSiteTest", "MyHumbleWebSiteTest\MyHumbleWebSiteTest.csproj", "{69225687-EE5D-460D-A4CE-B74AD20CB964}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{38A98A99-6AA0-44A3-8A08-B86875E95D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38A98A99-6AA0-44A3-8A08-B86875E95D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38A98A99-6AA0-44A3-8A08-B86875E95D05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69225687-EE5D-460D-A4CE-B74AD20CB964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69225687-EE5D-460D-A4CE-B74AD20CB964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69225687-EE5D-460D-A4CE-B74AD20CB964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69225687-EE5D-460D-A4CE-B74AD20CB964}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

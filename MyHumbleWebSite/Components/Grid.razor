@@ -1,0 +1,37 @@
+﻿@using Blazor.Extensions;
+@using Blazor.Extensions.Canvas
+@using Blazor.Extensions.Canvas.Canvas2D;
+@using System.Threading
+@using Microsoft.JSInterop
+@using System.Threading.Tasks
+@inject IJSRuntime jsRuntime
+<div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 100%; height: 100%">
+    <BECanvas Width="400" Height="400" @ref="_canvasComponent"></BECanvas>
+</div>
+
+@code {
+ 
+    [Parameter]
+    public Ball Ball { get; set; }
+
+    private BECanvasComponent _canvasComponent;
+    private BrowserDimension _browserDimension = new(400, 400);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+       
+        await jsRuntime.InvokeVoidAsync("ResizeCanvas");
+       
+        using (Canvas2DContext canvas2DContext = await _canvasComponent.CreateCanvas2DAsync())
+        {
+            await canvas2DContext.ClearRectAsync(0, 0, _browserDimension.Width, _browserDimension.Height);
+            await canvas2DContext.BeginPathAsync();
+            await Ball.DrawOn(canvas2DContext);
+            await canvas2DContext.SetFillStyleAsync("#0095DD");
+            await canvas2DContext.FillAsync();
+            await canvas2DContext.ClosePathAsync();
+        }
+    }
+
+    
+}
