@@ -37,16 +37,11 @@
             };
         };
         document.onkeydown = function(evt) {
-console.log(evt);
             window.KeyBoardDotNetRef.invokeMethodAsync("CurrentKeyDown",
                  evt.code
-            );
-            // if (evt.ctrlKey && evt.keyCode == 90) {
-            //     alert("Ctrl-Z");
-            // }
+            ); 
         };
         window.setKeyBoardRef = function (dotNetObjRef) {
-            console.log(dotNetObjRef);
             window.KeyBoardDotNetRef = dotNetObjRef;
         }
         function ResizeCanvas() {

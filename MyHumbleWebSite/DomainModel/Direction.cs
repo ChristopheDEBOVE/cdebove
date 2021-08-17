@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CSharpFunctionalExtensions;
 
-namespace christophedebove
+namespace MyHumbleWebSite.DomainModel
 {
     public class Direction : ValueObject
     {
@@ -11,6 +11,11 @@ namespace christophedebove
         {
             _value = value;
         }
+
+        public bool IsOposite(Direction direction)=>
+             (this == North && direction == South || this == South && direction == North
+                                                    || this == East && direction == West ||
+                                                    this == West && direction == East) ;
 
         public static Direction North = new("North");
         public static Direction East = new("East");

@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <BlazorCacheBootResources>false</BlazorCacheBootResources>
-        <RootNamespace>christophedebove</RootNamespace>
 
     </PropertyGroup>
 

@@ -1,38 +1,70 @@
 ﻿@page "/"
+@using MyHumbleWebSite.Infrastructure
 @inject IJSRuntime jsRuntime
 @code {
-    private static System.Timers.Timer aTimer;
-    private Ball _ball;
-    public KeyBoard KeyBoard = new ();
     
-    public void StartTimer()
-    {
-        aTimer = new System.Timers.Timer(10);
-        aTimer.Elapsed += Tick;
-        aTimer.Enabled = true;
-    }
-
-    public void Tick(Object source, System.Timers.ElapsedEventArgs e)
-    { 
-        _ball?.SetDirection( KeyBoard.CurrentDirection);
-        _ball?.Roll();
-        InvokeAsync(StateHasChanged);
-    }
+    private Snake _snake;
+    private Apple _apple;
+    private readonly KeyBoard KeyBoard = new ();
+    private BrowserDimension BrowserDimension;
+    private static System.Timers.Timer aTimer;
+    private (int X,int Y) InitialPosition;
+    
     protected override void OnInitialized()
     {
+        KeyBoard.OnKeyStroked += KeyStroked;
         StartTimer();
     }
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
-        var browserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
-        if (_ball == null)
-            _ball = new Ball(browserDimension.Width / 2, browserDimension.Height / 2);
+        BrowserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
+        InitialPosition = (BrowserDimension.Width / 2, BrowserDimension.Height / 2);
+        if(_snake==null)
+            GenerateSnake();
+    }
+
+    private void GenerateSnake()
+    {
+        _snake = new Snake(Direction.North, InitialPosition.X,InitialPosition.Y);
+    }
+    private void GenerateApple()
+    { 
+        var x = new Random().Next(10) * Ball.Size*2;
+        var y = new Random().Next(10) * Ball.Size*2;
+        _apple = new Apple(InitialPosition.X + x, InitialPosition.Y + y);
+    }
+    
+    private void StartTimer()
+    {
+        aTimer = new System.Timers.Timer(100);
+        aTimer.Elapsed += Tick;
+        aTimer.Enabled = true;
+    }
+
+    private void Tick(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        _snake?.MoveOn();
+        if (_snake != null && (_apple == null || _snake.TryEat(_apple)))
+            GenerateApple();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void KeyStroked(object sender, KeyBoard.OnKeyStrokedArgs args)
+    {
+        if(_snake==null)return;
+        
+        if(args.Key == KeyBoard.Key.ArrowDown) _snake.LookToThe( Direction.South);
+        if(args.Key == KeyBoard.Key.ArrowUp) _snake.LookToThe( Direction.North);
+        if(args.Key == KeyBoard.Key.ArrowLeft) _snake.LookToThe( Direction.West);
+        if(args.Key == KeyBoard.Key.ArrowRight) _snake.LookToThe( Direction.East);
+        if(args.Key == KeyBoard.Key.Space) GenerateSnake();
     }
 }
 
-@if (_ball != null)
+@if (_snake != null)
 {
-    <Grid  Ball="@_ball"></Grid>    
+    <Grid  Snake="@_snake" Apple="@_apple"></Grid>    
 }

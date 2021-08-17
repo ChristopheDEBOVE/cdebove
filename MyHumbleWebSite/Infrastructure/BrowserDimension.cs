@@ -1,4 +1,4 @@
-﻿namespace christophedebove
+﻿namespace MyHumbleWebSite.Infrastructure
 {
     public class BrowserDimension
     {

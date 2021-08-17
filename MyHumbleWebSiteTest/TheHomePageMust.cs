@@ -1,7 +1,7 @@
 using Bunit;
-using christophedebove.Components;
-using christophedebove.Pages;
 using FluentAssertions;
+using MyHumbleWebSite.Components;
+using MyHumbleWebSite.Pages;
 using Xunit;
 
 namespace MyHumbleWebSiteTest
@@ -22,5 +22,4 @@ namespace MyHumbleWebSiteTest
             _cut.FindComponent<Grid>().Should().NotBeNull();
         }
     }
- 
 }
