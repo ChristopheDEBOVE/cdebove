@@ -1,6 +1,12 @@
-﻿@using Blazor.Extensions
+﻿@using Blazor.Extensions;
+@using Blazor.Extensions.Canvas
+@using Blazor.Extensions.Canvas.Canvas2D;
+@using System.Threading
+@using Microsoft.JSInterop
+@using System.Threading.Tasks
 @using MyHumbleWebSite.Infrastructure
 @inject IJSRuntime jsRuntime
+
 <BECanvas Width="400" Height="400" @ref="_canvasComponent"></BECanvas>
 
 @code {
@@ -17,9 +23,6 @@
     private BECanvasComponent _canvasComponent;
     private BrowserDimension _browserDimension = new(400, 400);
 
-    protected override void OnInitialized()
-    {
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
