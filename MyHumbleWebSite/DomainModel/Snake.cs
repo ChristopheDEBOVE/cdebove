@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace MyHumbleWebSite.DomainModel
@@ -8,7 +7,8 @@ namespace MyHumbleWebSite.DomainModel
     {
         public Snake(Direction direction, int x, int y)
         {
-            body.Add(new BodyMember(x, y, direction));
+            body.Add(new BodyMember(x, y, direction).SetSnakeHeadFace());
+            Grow();
         }
 
         private bool _isAlive = true;
@@ -22,14 +22,23 @@ namespace MyHumbleWebSite.DomainModel
         private readonly List<BodyMember> body = new();
         private BodyMember Head => body.First();
         private bool HasABody => body.Count > 1;
-        private bool IsLookingToTheOpositeWay(Direction direction) => Head.Direction.IsOposite(direction);
-        public IEnumerable<BodyMember> GetParts()=>body;
+
+        private bool IsLookingToTheOpositeWay(Direction direction)
+        {
+            return Head.Direction.IsOposite(direction);
+        }
+
+        public IEnumerable<BodyMember> GetParts()
+        {
+            return body;
+        }
 
         private void Grow()
         {
             body.Add(BodyMember.NewBodyMemberFollowing(body.Last()));
         }
-        
+
+        private int TimeLeftWithTrollingFace = 0;
         public void LookToThe(Direction direction)
         {
             if (HasABody && IsLookingToTheOpositeWay(direction))
@@ -50,7 +59,9 @@ namespace MyHumbleWebSite.DomainModel
         {
             if (!_isAlive)
                 return;
-
+            TimeLeftWithTrollingFace--;
+            if (TimeLeftWithTrollingFace <= 0)
+                Head.SetSnakeHeadFace();
             for (var i = body.Count - 1; i >= 0; i--)
             {
                 if (i == 0)
@@ -68,11 +79,10 @@ namespace MyHumbleWebSite.DomainModel
         public bool TryEat(Apple apple)
         {
             if (apple == null || !Head.CollidesWith(apple)) return false;
-               
+            Head.SetTrollFace();
+            TimeLeftWithTrollingFace = 10;
             Grow();
             return true;
         }
-
-
     }
 }

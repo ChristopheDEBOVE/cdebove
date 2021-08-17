@@ -30,6 +30,7 @@
 
     private void GenerateSnake()
     {
+        _score = 0;
         _snake = new Snake(Direction.North, InitialPosition.X, InitialPosition.Y);
     }
 
@@ -45,7 +46,7 @@
 
     private void StartTimer()
     {
-        aTimer = new System.Timers.Timer(100);
+        aTimer = new System.Timers.Timer(150);
         aTimer.Elapsed += Tick;
         aTimer.Enabled = true;
     }
@@ -84,7 +85,7 @@
     
     
     
-    <div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 80%; height: 80%; border: salmon 2px solid;">
+    <div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 80%; height: 80%; border: #5c2d91 2px solid;">
         <Grid Snake="@_snake" Apple="@_apple" Score="@_score"></Grid>
     </div>
 }

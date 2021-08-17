@@ -38,10 +38,10 @@ namespace MyHumbleWebSiteTest
         }
 
         [Theory]
-        [InlineData("North", 0, -1)]
-        [InlineData("South", 0, 1)]
-        [InlineData("East", 1, 0)]
-        [InlineData("West", -1, 0)]
+        [InlineData("North", 0, -40)]
+        [InlineData("South", 0, 40)]
+        [InlineData("East", 40, 0)]
+        [InlineData("West", -40, 0)]
         public void Move_forward_the_direction_is_looking(string direction, int expectedX, int expectedY)
         {
             Snake sut = GetSnake(direction);
@@ -51,30 +51,17 @@ namespace MyHumbleWebSiteTest
             HeadOf(sut).X.Should().Be(expectedX);
             HeadOf(sut).Y.Should().Be(expectedY);
         }
-
-        [Trait("A Snake when move on an apple", "his body must")]
-        [Fact(DisplayName = "follow his head")]
-        public void Body_Member_mustFollow_the_head()
-        {
-            Snake sut = GetSnake("North");
-            var x = HeadOf(sut).X;
-            var y = HeadOf(sut).Y;
-            BodyOf(sut).X.Should().Be(x);
-            BodyOf(sut).Y.Should().Be(y);
-        }
-
-
+        
         private Snake GetSnake(string direction)
         {
-            switch (direction)
+            return direction switch
             {
-                case "North": return new Snake(Direction.North, 0, 0);
-                case "South": return new Snake(Direction.South, 0, 0);
-                case "East": return new Snake(Direction.East, 0, 0);
-                case "West": return new Snake(Direction.West, 0, 0);
-            }
-
-            throw new InvalidDataException();
+                "North" => new Snake(Direction.North, 0, 0),
+                "South" => new Snake(Direction.South, 0, 0),
+                "East" =>  new Snake(Direction.East, 0, 0),
+                "West" =>  new Snake(Direction.West, 0, 0),
+                _ => throw new InvalidDataException()
+            };
         }
     }
 }

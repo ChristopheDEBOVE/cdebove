@@ -5,12 +5,16 @@ namespace MyHumbleWebSite.DomainModel
     public class BodyMember : Ball
     {
         public Direction Direction { get; private set; }
-
-        public BodyMember(int x, int y, Direction direction) : base(x, y, "#688A08")
+        public Shape Shape { get; private set; } = Shape.SnakeBody;
+        
+        public BodyMember(int x, int y, Direction direction) : base(x, y, "#5c2d91")
         {
             Direction = direction;
         }
 
+        public BodyMember SetSnakeHeadFace(){ Shape = Shape.SnakeHead; return this; }
+        public BodyMember SetTrollFace(){ Shape = Shape.Trolling; return this; }
+        
         public static BodyMember NewBodyMemberFollowing(BodyMember b)
         {
             if (b.Direction == Direction.North) return new (b.X, b.Y + Size, b.Direction);

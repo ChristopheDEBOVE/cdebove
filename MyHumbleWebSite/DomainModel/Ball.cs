@@ -8,13 +8,12 @@ namespace MyHumbleWebSite.DomainModel
         {
             var (distX, distY) = (ball.X - ball2.X, ball.Y - ball2.Y);
             var distance = Math.Sqrt((distX * distX) + (distY * distY));
-            if (distance > Ball.Size) return false;
-            return true;
+            return !(distance > Ball.Size);
         }
     }
     public abstract class Ball
     {
-        public static readonly int Size = 20;
+        public static readonly int Size = 40;
 
         protected Ball(int x, int y, string color)
         {
