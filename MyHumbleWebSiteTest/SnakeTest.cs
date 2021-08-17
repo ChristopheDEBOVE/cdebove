@@ -51,15 +51,15 @@ namespace MyHumbleWebSiteTest
             HeadOf(sut).X.Should().Be(expectedX);
             HeadOf(sut).Y.Should().Be(expectedY);
         }
-        
+
         private Snake GetSnake(string direction)
         {
             return direction switch
             {
                 "North" => new Snake(Direction.North, 0, 0),
                 "South" => new Snake(Direction.South, 0, 0),
-                "East" =>  new Snake(Direction.East, 0, 0),
-                "West" =>  new Snake(Direction.West, 0, 0),
+                "East" => new Snake(Direction.East, 0, 0),
+                "West" => new Snake(Direction.West, 0, 0),
                 _ => throw new InvalidDataException()
             };
         }

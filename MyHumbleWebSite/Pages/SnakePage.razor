@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using MyHumbleWebSite.Infrastructure
+@using System.Timers
 @inject IJSRuntime jsRuntime
 
 @code {
@@ -9,7 +10,7 @@
     private int _score;
     private readonly KeyBoard KeyBoard = new();
     private BrowserDimension BrowserDimension;
-    private static System.Timers.Timer aTimer;
+    private static Timer aTimer;
     private (int X,int Y) InitialPosition;
 
     protected override void OnInitialized()
@@ -36,27 +37,32 @@
 
     private void GenerateApple()
     {
-        var x = GetRandomPositionDependingOn((int)(BrowserDimension.Width*0.8));
+        var x = GetRandomPositionDependingOn((int) (BrowserDimension.Width * 0.8));
         var y = GetRandomPositionDependingOn((int) (BrowserDimension.Height * 0.8));
-         
-        _apple = new Apple( x, y);
+
+        _apple = new Apple(x, y);
     }
 
-    private int GetRandomPositionDependingOn(int x)=>new Random().Next(Ball.Size, x-Ball.Size);
+    private int GetRandomPositionDependingOn(int x)
+    {
+        return new Random().Next(Ball.Size, x - Ball.Size);
+    }
 
     private void StartTimer()
     {
-        aTimer = new System.Timers.Timer(150);
+        aTimer = new Timer(150);
         aTimer.Elapsed += Tick;
         aTimer.Enabled = true;
     }
 
-    private void Tick(Object source, System.Timers.ElapsedEventArgs e)
+    private void Tick(object source, ElapsedEventArgs e)
     {
         _snake?.MoveOn();
         if (_snake != null && (_apple == null || _snake.TryEat(_apple)))
         {
-            _score++;   GenerateApple();}
+            _score++;
+            GenerateApple();
+        }
         InvokeAsync(StateHasChanged);
     }
 
@@ -70,21 +76,25 @@
         if (args.Key == KeyBoard.Key.ArrowRight) _snake.LookToThe(Direction.East);
         if (args.Key == KeyBoard.Key.Space) GenerateSnake();
     }
+
 }
 
 @if (_snake != null)
 {
     <div>
         <img src="/BrandBlazor_big_with_border.png" style="float:left; width:40px"/>
-      <blockquote class="blockquote" style="display:inline">
+        <blockquote class="blockquote" style="display:inline">
             <p class="mb-0" style="font-size:0.9em">Snake - use the arrows to control the Snake and Space to start a new game.</p>
-            <footer class="blockquote-footer" style="font-size:0.8em">Made with Blazor - <cite title="Source Title"><a href="https://github.com/ChristopheDEBOVE/christophedebove.github.io" target="_blank">Sources</a></cite></footer>
-        </blockquote>    
+            <footer class="blockquote-footer" style="font-size:0.8em">
+                Made with Blazor -
+                <cite title="Source Title">
+                    <a href="https://github.com/ChristopheDEBOVE/christophedebove.github.io" target="_blank">Sources</a>
+                </cite>
+            </footer>
+        </blockquote>
     </div>
-    
-    
-    
-    
+
+
     <div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 80%; height: 80%; border: #5c2d91 2px solid;">
         <Grid Snake="@_snake" Apple="@_apple" Score="@_score"></Grid>
     </div>

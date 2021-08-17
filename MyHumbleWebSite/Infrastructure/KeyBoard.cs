@@ -5,6 +5,7 @@ using Microsoft.JSInterop;
 namespace MyHumbleWebSite.Infrastructure
 {
     public delegate void OnKeyStroked(object sender, KeyBoard.OnKeyStrokedArgs args);
+
     public class KeyBoard
     {
         public event OnKeyStroked OnKeyStroked;
@@ -38,12 +39,12 @@ namespace MyHumbleWebSite.Infrastructure
 
         public class OnKeyStrokedArgs
         {
-            public Key Key { get; }
-
             public OnKeyStrokedArgs(Key key)
             {
                 Key = key;
             }
+
+            public Key Key { get; }
         }
     }
 }

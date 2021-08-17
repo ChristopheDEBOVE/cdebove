@@ -14,9 +14,8 @@ namespace MyHumbleWebSiteTest
         {
             _cut = new TestContext().RenderComponent<SnakePage>();
         }
-        
+
         [Fact(Skip = "fix jsinterop issue")]
-        
         public void ShowAGrid()
         {
             _cut.FindComponent<Grid>().Should().NotBeNull();

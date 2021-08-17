@@ -5,23 +5,26 @@ namespace MyHumbleWebSite.DomainModel
 {
     public class Snake
     {
+        private readonly List<BodyMember> body = new();
+
+        private bool _isAlive = true;
+
+        private int TimeLeftWithTrollingFace;
+
         public Snake(Direction direction, int x, int y)
         {
             body.Add(new BodyMember(x, y, direction).SetSnakeHeadFace());
             Grow();
         }
 
-        private bool _isAlive = true;
+        private BodyMember Head => body.First();
+        private bool HasABody => body.Count > 1;
 
         private void Dead()
         {
             _isAlive = false;
             foreach (var ball in body) ball.Color = "#FF8000";
         }
-
-        private readonly List<BodyMember> body = new();
-        private BodyMember Head => body.First();
-        private bool HasABody => body.Count > 1;
 
         private bool IsLookingToTheOpositeWay(Direction direction)
         {
@@ -38,7 +41,6 @@ namespace MyHumbleWebSite.DomainModel
             body.Add(BodyMember.NewBodyMemberFollowing(body.Last()));
         }
 
-        private int TimeLeftWithTrollingFace = 0;
         public void LookToThe(Direction direction)
         {
             if (HasABody && IsLookingToTheOpositeWay(direction))
