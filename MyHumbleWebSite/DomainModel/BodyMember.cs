@@ -1,34 +1,38 @@
-﻿namespace MyHumbleWebSite.DomainModel
+﻿using System.Data;
+
+namespace MyHumbleWebSite.DomainModel
 {
     public class BodyMember : Ball
     {
         public Direction Direction { get; private set; }
-        public BodyMember(int x, int y, Direction direction) : base(x, y, "#800000")
+
+        public BodyMember(int x, int y, Direction direction) : base(x, y, "#688A08")
         {
-            this.Direction = direction;
-        }
-        public static BodyMember NewBodyMemberFollowing(BodyMember b)
-        {
-            if (b.Direction == Direction.North) return new BodyMember(b.X, b.Y + Size * 2, b.Direction);
-            if (b.Direction == Direction.South) return new BodyMember(b.X, b.Y - Size * 2, b.Direction);
-            if (b.Direction == Direction.West) return new BodyMember(b.X + Size * 2, b.Y, b.Direction);
-            if (b.Direction == Direction.East) return new BodyMember(b.X - Size * 2, b.Y, b.Direction);
-            return b;
-        }
-        public void Roll()
-        {
-            if (Direction == Direction.North) Y-=Size*2;
-            if (Direction == Direction.South) Y+=Size*2;
-            if (Direction == Direction.West) X-=Size*2;
-            if (Direction == Direction.East) X+=Size*2;
-        }
-        public static BodyMember New(int x, int y, Direction direction)
-        {
-            return new(x, y, direction);
+            Direction = direction;
         }
 
-        public BodyMember Clone() => New(X, Y, Direction);
-    
+        public static BodyMember NewBodyMemberFollowing(BodyMember b)
+        {
+            if (b.Direction == Direction.North) return new (b.X, b.Y + Size, b.Direction);
+            if (b.Direction == Direction.South) return new (b.X, b.Y - Size, b.Direction);
+            if (b.Direction == Direction.West) return new (b.X + Size, b.Y, b.Direction);
+            if (b.Direction == Direction.East) return new (b.X - Size, b.Y, b.Direction);
+            throw new ConstraintException($"The direction is not handled {b.Direction}");
+        }
+
+        public void Roll()
+        {
+            if (Direction == Direction.North) Y -= Size;
+            if (Direction == Direction.South) Y += Size;
+            if (Direction == Direction.West) X -= Size;
+            if (Direction == Direction.East) X += Size;
+        }
+
+        public BodyMember Clone()
+        {
+            return new(X, Y, Direction);
+        }
+
         public void SetDirection(Direction direction)
         {
             Direction = direction;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyHumbleWebSite.DomainModel
@@ -7,8 +8,7 @@ namespace MyHumbleWebSite.DomainModel
     {
         public Snake(Direction direction, int x, int y)
         {
-            Head = BodyMember.New(x, y, direction);
-            body.Add(Head);
+            body.Add(new BodyMember(x, y, direction));
         }
 
         private bool _isAlive = true;
@@ -16,26 +16,23 @@ namespace MyHumbleWebSite.DomainModel
         private void Dead()
         {
             _isAlive = false;
-            foreach (var ball in body) ball.Color = "#FF0000";
+            foreach (var ball in body) ball.Color = "#FF8000";
         }
 
         private readonly List<BodyMember> body = new();
-        private readonly BodyMember Head;
+        private BodyMember Head => body.First();
+        private bool HasABody => body.Count > 1;
+        private bool IsLookingToTheOpositeWay(Direction direction) => Head.Direction.IsOposite(direction);
+        public IEnumerable<BodyMember> GetParts()=>body;
 
         private void Grow()
         {
             body.Add(BodyMember.NewBodyMemberFollowing(body.Last()));
         }
-
-        public IEnumerable<BodyMember> GetParts()
-        {
-            return body;
-        }
-
-
+        
         public void LookToThe(Direction direction)
         {
-            if (body.Count() > 1 && Head.Direction.IsOposite(direction))
+            if (HasABody && IsLookingToTheOpositeWay(direction))
             {
                 Dead();
                 return;
@@ -44,7 +41,7 @@ namespace MyHumbleWebSite.DomainModel
             Head.SetDirection(direction);
         }
 
-        public bool CollideWithItSelf()
+        private bool CollideWithItSelf()
         {
             return body.Skip(1).Any(a => a.X == Head.X && a.Y == Head.Y);
         }
@@ -61,7 +58,7 @@ namespace MyHumbleWebSite.DomainModel
                     body[i].Roll();
                     continue;
                 }
-                
+
                 body[i] = body[i - 1].Clone();
             }
 
@@ -70,13 +67,12 @@ namespace MyHumbleWebSite.DomainModel
 
         public bool TryEat(Apple apple)
         {
-            if (apple != null && apple.X == Head.X && apple.Y == Head.Y)
-            {
-                Grow();
-                return true;
-            }
-
-            return false;
+            if (apple == null || !Head.CollidesWith(apple)) return false;
+               
+            Grow();
+            return true;
         }
+
+
     }
 }

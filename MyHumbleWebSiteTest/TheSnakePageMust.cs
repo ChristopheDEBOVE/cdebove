@@ -6,13 +6,13 @@ using Xunit;
 
 namespace MyHumbleWebSiteTest
 {
-    public class TheHomePageMust
+    public class TheSnakePageMust
     {
-        private readonly IRenderedComponent<Index> _cut;
+        private readonly IRenderedComponent<SnakePage> _cut;
 
-        public TheHomePageMust()
+        public TheSnakePageMust()
         {
-            _cut = new TestContext().RenderComponent<Index>();
+            _cut = new TestContext().RenderComponent<SnakePage>();
         }
         
         [Fact(Skip = "fix jsinterop issue")]

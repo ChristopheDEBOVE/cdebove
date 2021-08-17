@@ -1,5 +1,17 @@
-﻿namespace MyHumbleWebSite.DomainModel
+﻿using System;
+
+namespace MyHumbleWebSite.DomainModel
 {
+    public static class BallExtension
+    {
+        public static bool CollidesWith(this Ball ball, Ball ball2)
+        {
+            var (distX, distY) = (ball.X - ball2.X, ball.Y - ball2.Y);
+            var distance = Math.Sqrt((distX * distX) + (distY * distY));
+            if (distance > Ball.Size) return false;
+            return true;
+        }
+    }
     public abstract class Ball
     {
         public static readonly int Size = 20;
