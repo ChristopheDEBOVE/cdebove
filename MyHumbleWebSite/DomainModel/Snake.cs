@@ -11,9 +11,9 @@ namespace MyHumbleWebSite.DomainModel
 
         private int TimeLeftWithTrollingFace;
 
-        public Snake(Direction direction, int x, int y)
+        public Snake(Direction direction, Position position)
         {
-            body.Add(new BodyMember(x, y, direction).SetSnakeHeadFace());
+            body.Add(new BodyMember(position, direction).SetSnakeHeadFace());
             Grow();
         }
 
@@ -43,7 +43,7 @@ namespace MyHumbleWebSite.DomainModel
 
         public void LookToThe(Direction direction)
         {
-            if (HasABody && IsLookingToTheOpositeWay(direction))
+            if (IsLookingToTheOpositeWay(direction))
             {
                 Dead();
                 return;
@@ -52,10 +52,10 @@ namespace MyHumbleWebSite.DomainModel
             Head.SetDirection(direction);
         }
 
-        private bool CollideWithItSelf()
-        {
-            return body.Skip(1).Any(a => a.X == Head.X && a.Y == Head.Y);
-        }
+        private bool IsEattingItSelf=> 
+             body.Skip(1).Any(member => member.Position == Head.Position);
+        
+
 
         public void MoveOn()
         {
@@ -75,7 +75,7 @@ namespace MyHumbleWebSite.DomainModel
                 body[i] = body[i - 1].Clone();
             }
 
-            if (CollideWithItSelf()) Dead();
+            if (IsEattingItSelf) Dead();
         }
 
         public bool TryEat(Apple apple)

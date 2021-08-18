@@ -7,7 +7,7 @@ namespace MyHumbleWebSite.DomainModel
 {
     public class NullGame : Game
     {
-        public NullGame() : base(0, 0)
+        public NullGame() : base(Rectangular.NullAreaRectangular())
         {
         }
 
@@ -17,27 +17,25 @@ namespace MyHumbleWebSite.DomainModel
     {
         public int Score { get; private set; }
         
-        private readonly int _mapWidth;
-        private readonly int _mapHeight;
+        private readonly Rectangular _map;
         private Snake _snake;
         private Apple _apple;
 
-        public Game(int mapWidth, int mapHeight)
+        public Game(Rectangular map)
         {
-            _mapWidth = mapWidth;
-            _mapHeight = mapHeight;
+            _map = map;
             StartANewGame();
         }
 
         private void StartANewGame()
         {
             Score = 0;
-            _snake = new Snake(North, _mapWidth / 2, _mapHeight / 2);
+            _snake = new Snake(North, Position.CenterOf(_map));
         }
 
         private void GenerateApple()
         {
-            _apple = Apple.GetRandomlyLocatedDependingOn((int) (_mapWidth * 0.8),(int) (_mapHeight * 0.8));
+            _apple = Apple.GetRandomlyLocatedOn(_map);
         }
 
         public void Tick()

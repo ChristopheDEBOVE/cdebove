@@ -12,10 +12,9 @@ namespace MyHumbleWebSiteTest
         [Fact(DisplayName = "Have_a_position_initialy")]
         public void Have_a_position_initialy()
         {
-            Snake sut = new(Direction.North, 0, 0);
+            Snake sut = new(Direction.North, Position.Null);
 
-            HeadOf(sut).X.Should().Be(0);
-            HeadOf(sut).Y.Should().Be(0);
+            HeadOf(sut).Position.Should().Be(Position.Null);
         }
 
         private static BodyMember HeadOf(Snake sut)
@@ -29,12 +28,12 @@ namespace MyHumbleWebSiteTest
         }
 
         [Trait("A Snake", "must")]
-        [Fact(DisplayName = "Have_just_an_head_initialy")]
+        [Fact(DisplayName = "Have_just_an_head_and_one_part_initialy")]
         public void Have_just_an_head_initialy()
         {
             Snake sut = GetSnake("North");
 
-            sut.GetParts().Count().Should().Be(1);
+            sut.GetParts().Count().Should().Be(2);
         }
 
         [Theory]
@@ -48,18 +47,18 @@ namespace MyHumbleWebSiteTest
 
             sut.MoveOn();
 
-            HeadOf(sut).X.Should().Be(expectedX);
-            HeadOf(sut).Y.Should().Be(expectedY);
+            HeadOf(sut).Position.Should().Be(new Position(expectedX,expectedY));
+
         }
 
         private Snake GetSnake(string direction)
         {
             return direction switch
             {
-                "North" => new Snake(Direction.North, 0, 0),
-                "South" => new Snake(Direction.South, 0, 0),
-                "East" => new Snake(Direction.East, 0, 0),
-                "West" => new Snake(Direction.West, 0, 0),
+                "North" => new Snake(Direction.North, Position.Null),
+                "South" => new Snake(Direction.South,Position.Null),
+                "East" => new Snake(Direction.East,Position.Null),
+                "West" => new Snake(Direction.West,Position.Null),
                 _ => throw new InvalidDataException()
             };
         }

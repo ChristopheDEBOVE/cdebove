@@ -1,28 +1,24 @@
-﻿using System;
+﻿using MyHumbleWebSite.Infrastructure;
 
 namespace MyHumbleWebSite.DomainModel
 {
     public class Apple : IDisplayable
     {
-        public Apple(int x, int y) 
+        public Apple(Position Position)
         {
             Shape = Shape.GetRandomEnemiesShape();
-            X = x;
-            Y = y; 
+            this.Position = Position;
         }
 
         public int Size { get; } = AppleSize;
         private static readonly int AppleSize = 40;
         public string Color { get; } = "#FF0000";
-        public int X { get; }
-        public int Y { get; }
+        public Position Position { get; }
         public Shape Shape { get; }
 
-        public static Apple GetRandomlyLocatedDependingOn(int width,int height)
+        public static Apple GetRandomlyLocatedOn(Rectangular rectangular)
         {
-            (int x, int y) = (new Random().Next(AppleSize, width - AppleSize),
-                new Random().Next(AppleSize, height - AppleSize));
-            return new Apple(x,y);
+            return new(Position.RandomlyLocatedOn(AppleSize, rectangular));
         }
     }
 }

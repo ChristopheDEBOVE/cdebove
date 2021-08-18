@@ -30,10 +30,10 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(_keyBoard));
-        var browserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
+        var browserDimension = await jsRuntime.InvokeAsync<Rectangular>("getDimensions");
         if (_game is NullGame)
         {
-            _game = new Game(browserDimension.Width, browserDimension.Height);
+            _game = new Game(Rectangular.Resize(browserDimension,0.8));
             _keyBoard.OnKeyStroked += KeyStroked;
         }
     }

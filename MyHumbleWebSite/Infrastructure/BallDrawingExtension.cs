@@ -8,19 +8,20 @@ namespace MyHumbleWebSite.Infrastructure
 {
     public static class BallDrawingExtension
     {
-        public static async Task DrawImageFor(this IDisplayable ball, Canvas2DContext context,
+        public static async Task DrawImageFor(this IDisplayable element, Canvas2DContext context,
             ElementReference imageRef)
         {
-            await context.DrawImageAsync(imageRef, ball.X - ball.Size / 2, ball.Y - ball.Size / 2, ball.Size,
-                ball.Size);
+            await context.DrawImageAsync(imageRef, element.Position.X - element.Size / 2,
+                element.Position.Y - element.Size / 2, element.Size,
+                element.Size);
         }
 
 
-        public static async Task DrawOn(this IDisplayable ball, Canvas2DContext context)
+        public static async Task DrawOn(this IDisplayable element, Canvas2DContext context)
         {
             await context.BeginPathAsync();
-            await context.ArcAsync(ball.X, ball.Y, ball.Size / 2, 0, Math.PI * 2);
-            await context.SetFillStyleAsync(ball.Color);
+            await context.ArcAsync(element.Position.X, element.Position.Y, element.Size / 2, 0, Math.PI * 2);
+            await context.SetFillStyleAsync(element.Color);
             await context.FillAsync();
             await context.ClosePathAsync();
         }
