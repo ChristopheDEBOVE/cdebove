@@ -31,20 +31,21 @@ namespace MyHumbleWebSite.DomainModel
         {
             Score = 0;
             _snake = new Snake(North, Position.CenterOf(_map));
+            GenerateNewApple();
         }
 
-        private void GenerateApple()
+        private void GenerateNewApple()
         {
             _apple = Apple.GetRandomlyLocatedOn(_map);
         }
 
         public void Tick()
         {
-            _snake?.MoveOn();
-            if (_snake != null && (_apple == null || _snake.TryEat(_apple)))
+            _snake.MoveOn();
+            if (_snake.CouldEat(_apple))
             {
                 Score++;
-                GenerateApple();
+                GenerateNewApple();
             }
         }
 

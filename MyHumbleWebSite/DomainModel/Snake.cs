@@ -78,7 +78,7 @@ namespace MyHumbleWebSite.DomainModel
             if (IsEattingItSelf) Dead();
         }
 
-        public bool TryEat(Apple apple)
+        public bool CouldEat(Apple apple)
         {
             if (apple == null || !Head.CollidesWith(apple)) return false;
             Head.SetTrollFace();
