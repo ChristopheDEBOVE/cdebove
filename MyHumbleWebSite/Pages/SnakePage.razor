@@ -10,24 +10,26 @@
     private BrowserDimension BrowserDimension;
 
     private static Timer aTimer;
-    
+
 
     protected override void OnInitialized()
     {
-        
         StartTimer();
     }
+
     private void StartTimer()
     {
         aTimer = new Timer(150);
         aTimer.Elapsed += Tick;
         aTimer.Enabled = true;
     }
+
     private void Tick(object source, ElapsedEventArgs e)
     {
         _game.Tick();
         InvokeAsync(StateHasChanged);
     }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
@@ -35,10 +37,15 @@
         if (_game == null)
         {
             _game = new Game(BrowserDimension.Width, BrowserDimension.Height);
-            KeyBoard.OnKeyStroked += _game.KeyStroked;    
+            KeyBoard.OnKeyStroked += KeyStroked;
         }
-        
     }
+
+    private void KeyStroked(object sender, KeyBoard.OnKeyStrokedArgs args)
+    {
+        _game.KeyStroked(args.Key);
+    }
+
 }
 
 @if (_game != null)

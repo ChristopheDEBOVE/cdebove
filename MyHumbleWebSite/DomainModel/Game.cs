@@ -1,62 +1,61 @@
 ﻿using System.Collections.Generic;
 using MyHumbleWebSite.Infrastructure;
+using static MyHumbleWebSite.DomainModel.Direction;
 
 namespace MyHumbleWebSite.DomainModel
 {
     public class Game
     {
-        private readonly int _width;
-        private readonly int _height;
-        private Snake Snake { get; set; }
-        private Apple Apple { get; set; }
         public int Score { get; private set; }
-        private readonly (int X, int Y) InitialPosition;
+        
+        private readonly int _mapWidth;
+        private readonly int _mapHeight;
+        private Snake _snake;
+        private Apple _apple;
 
-        public Game(int width, int height)
+        public Game(int mapWidth, int mapHeight)
         {
-            _width = width;
-            _height = height;
-            InitialPosition = (width / 2, height / 2);
-            if (Snake == null)
-                GenerateSnake();
+            _mapWidth = mapWidth;
+            _mapHeight = mapHeight;
+            StartANewGame();
         }
 
-        private void GenerateSnake()
+        private void StartANewGame()
         {
             Score = 0;
-            Snake = new Snake(Direction.North, InitialPosition.X, InitialPosition.Y);
+            _snake = new Snake(North, _mapWidth / 2, _mapHeight / 2);
         }
 
         private void GenerateApple()
         {
-            Apple = Apple.GetRandomlyLocatedDependingOn((int) (_width * 0.8),(int) (_height * 0.8));
+            _apple = Apple.GetRandomlyLocatedDependingOn((int) (_mapWidth * 0.8),(int) (_mapHeight * 0.8));
         }
 
         public void Tick()
         {
-            Snake?.MoveOn();
-            if (Snake != null && (Apple == null || Snake.TryEat(Apple)))
+            _snake?.MoveOn();
+            if (_snake != null && (_apple == null || _snake.TryEat(_apple)))
             {
                 Score++;
                 GenerateApple();
             }
         }
 
-        public void KeyStroked(object sender, KeyBoard.OnKeyStrokedArgs args)
+        public void KeyStroked(KeyBoard.Key key)
         {
-            if (Snake == null) return;
+            if (_snake == null) return;
 
-            if (args.Key == KeyBoard.Key.ArrowDown) Snake.LookToThe(Direction.South);
-            if (args.Key == KeyBoard.Key.ArrowUp) Snake.LookToThe(Direction.North);
-            if (args.Key == KeyBoard.Key.ArrowLeft) Snake.LookToThe(Direction.West);
-            if (args.Key == KeyBoard.Key.ArrowRight) Snake.LookToThe(Direction.East);
-            if (args.Key == KeyBoard.Key.Space) GenerateSnake();
+            if (key == KeyBoard.Key.ArrowDown) _snake.LookToThe(South);
+            if (key == KeyBoard.Key.ArrowUp) _snake.LookToThe(North);
+            if (key == KeyBoard.Key.ArrowLeft) _snake.LookToThe(West);
+            if (key == KeyBoard.Key.ArrowRight) _snake.LookToThe(East);
+            if (key == KeyBoard.Key.Space) StartANewGame();
         }
 
         public IEnumerable<IDisplayable> ElementsToShow()
         {
-            foreach (var bodyMember in Snake.GetParts()) yield return bodyMember;
-            yield return Apple;
+            foreach (var bodyMember in _snake.GetParts()) yield return bodyMember;
+            yield return _apple;
         }
     }
 }
