@@ -18,7 +18,6 @@ namespace MyHumbleWebSite.DomainModel
         }
 
         private BodyMember Head => body.First();
-        private bool HasABody => body.Count > 1;
 
         private void Dead()
         {
@@ -31,7 +30,7 @@ namespace MyHumbleWebSite.DomainModel
             return Head.Direction.IsOposite(direction);
         }
 
-        public IEnumerable<BodyMember> GetParts()
+        public IEnumerable<IDisplayable> ElementsToShow()
         {
             return body;
         }

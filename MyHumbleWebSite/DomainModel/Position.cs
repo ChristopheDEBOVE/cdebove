@@ -52,10 +52,10 @@ namespace MyHumbleWebSite.DomainModel
 
         public static Position CenterOf(Rectangular map)=> new(map.Width / 2, map.Height / 2);
 
-        public static Position RandomlyLocatedOn(int offset, Rectangular rectangular)
+        public static Position RandomlyLocatedOn(Rectangular rectangular)
         {
-            return new (new Random().Next(offset, rectangular.Width - offset),
-                new Random().Next(offset, rectangular.Height - offset));
+            return new (new Random().Next( rectangular.Width ),
+                new Random().Next( rectangular.Height ));
         }
     }
 }

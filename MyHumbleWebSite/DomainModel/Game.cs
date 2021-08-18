@@ -62,7 +62,7 @@ namespace MyHumbleWebSite.DomainModel
 
         public virtual IEnumerable<IDisplayable> ElementsToShow()
         {
-            foreach (var bodyMember in _snake.GetParts()) yield return bodyMember;
+            foreach (var bodyMember in _snake.ElementsToShow()) yield return bodyMember;
             yield return _apple;
         }
     }

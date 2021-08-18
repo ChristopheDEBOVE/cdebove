@@ -17,23 +17,19 @@ namespace MyHumbleWebSiteTest
             HeadOf(sut).Position.Should().Be(Position.Null);
         }
 
-        private static BodyMember HeadOf(Snake sut)
+        private static IDisplayable HeadOf(Snake sut)
         {
-            return sut.GetParts().First();
+            return sut.ElementsToShow().First();
         }
 
-        private static BodyMember BodyOf(Snake sut)
-        {
-            return sut.GetParts().Skip(1).First();
-        }
-
+ 
         [Trait("A Snake", "must")]
         [Fact(DisplayName = "Have_just_an_head_and_one_part_initialy")]
         public void Have_just_an_head_initialy()
         {
             Snake sut = GetSnake("North");
 
-            sut.GetParts().Count().Should().Be(2);
+            sut.ElementsToShow().Count().Should().Be(2);
         }
 
         [Theory]

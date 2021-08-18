@@ -18,7 +18,7 @@ namespace MyHumbleWebSite.DomainModel
 
         public static Apple GetRandomlyLocatedOn(Rectangular rectangular)
         {
-            return new(Position.RandomlyLocatedOn(AppleSize, rectangular));
+            return new(Position.RandomlyLocatedOn(rectangular));
         }
     }
 }
