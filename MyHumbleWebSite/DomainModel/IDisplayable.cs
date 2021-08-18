@@ -2,13 +2,13 @@
 
 namespace MyHumbleWebSite.DomainModel
 {
-    public static class BallExtension
+    public static class IDisplayableExtension
     {
-        public static bool CollidesWith(this IDisplayable ball, IDisplayable ball2)
+        public static bool CollidesWith(this IDisplayable element1, IDisplayable element2)
         {
-            var (distX, distY) = (ball.X - ball2.X, ball.Y - ball2.Y);
+            var (distX, distY) = (element1.X - element2.X, element1.Y - element2.Y);
             var distance = Math.Sqrt(distX * distX + distY * distY);
-            return !(distance > ball.Size);
+            return !(distance > element1.Size);
         }
     }
 

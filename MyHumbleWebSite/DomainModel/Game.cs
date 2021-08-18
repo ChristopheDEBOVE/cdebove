@@ -1,9 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MyHumbleWebSite.Infrastructure;
 using static MyHumbleWebSite.DomainModel.Direction;
 
 namespace MyHumbleWebSite.DomainModel
 {
+    public class NullGame : Game
+    {
+        public NullGame() : base(0, 0)
+        {
+        }
+
+        public override IEnumerable<IDisplayable> ElementsToShow()=> ArraySegment<IDisplayable>.Empty;
+    }
     public class Game
     {
         public int Score { get; private set; }
@@ -52,7 +61,7 @@ namespace MyHumbleWebSite.DomainModel
             if (key == KeyBoard.Key.Space) StartANewGame();
         }
 
-        public IEnumerable<IDisplayable> ElementsToShow()
+        public virtual IEnumerable<IDisplayable> ElementsToShow()
         {
             foreach (var bodyMember in _snake.GetParts()) yield return bodyMember;
             yield return _apple;

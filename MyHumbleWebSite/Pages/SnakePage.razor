@@ -5,12 +5,9 @@
 
 
 @code {
-    private Game _game;
-    private readonly KeyBoard KeyBoard = new();
-    private BrowserDimension BrowserDimension;
-
-    private static Timer aTimer;
-
+    private Game _game = new NullGame();
+    private readonly KeyBoard _keyBoard = new();
+    private static Timer _timer;
 
     protected override void OnInitialized()
     {
@@ -19,9 +16,9 @@
 
     private void StartTimer()
     {
-        aTimer = new Timer(150);
-        aTimer.Elapsed += Tick;
-        aTimer.Enabled = true;
+        _timer = new Timer(150);
+        _timer.Elapsed += Tick;
+        _timer.Enabled = true;
     }
 
     private void Tick(object source, ElapsedEventArgs e)
@@ -32,12 +29,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
-        BrowserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
-        if (_game == null)
+        await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(_keyBoard));
+        var browserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
+        if (_game is NullGame)
         {
-            _game = new Game(BrowserDimension.Width, BrowserDimension.Height);
-            KeyBoard.OnKeyStroked += KeyStroked;
+            _game = new Game(browserDimension.Width, browserDimension.Height);
+            _keyBoard.OnKeyStroked += KeyStroked;
         }
     }
 
@@ -48,8 +45,7 @@
 
 }
 
-@if (_game != null)
-{
+ 
     <div>
         <img src="/BrandBlazor_big_with_border.png" style="float:left; width:40px"/>
         <blockquote class="blockquote" style="display:inline">
@@ -65,6 +61,5 @@
 
 
     <div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 80%; height: 80%; border: #5c2d91 2px solid;">
-        <Grid Game="@_game"></Grid>
+        <GameGrid Game="@_game"></GameGrid>
     </div>
-}

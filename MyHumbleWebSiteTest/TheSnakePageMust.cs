@@ -18,7 +18,7 @@ namespace MyHumbleWebSiteTest
         [Fact(Skip = "fix jsinterop issue")]
         public void ShowAGrid()
         {
-            _cut.FindComponent<Grid>().Should().NotBeNull();
+            _cut.FindComponent<GameGrid>().Should().NotBeNull();
         }
     }
 }
