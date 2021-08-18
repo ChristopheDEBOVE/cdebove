@@ -3,83 +3,45 @@
 @using System.Timers
 @inject IJSRuntime jsRuntime
 
-@code {
 
-    private Snake _snake;
-    private Apple _apple;
-    private int _score;
+@code {
+    private Game _game;
     private readonly KeyBoard KeyBoard = new();
     private BrowserDimension BrowserDimension;
+
     private static Timer aTimer;
-    private (int X,int Y) InitialPosition;
+    
 
     protected override void OnInitialized()
     {
-        KeyBoard.OnKeyStroked += KeyStroked;
+        
         StartTimer();
     }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
-        BrowserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
-        InitialPosition = (BrowserDimension.Width / 2, BrowserDimension.Height / 2);
-        if (_snake == null)
-            GenerateSnake();
-    }
-
-    private void GenerateSnake()
-    {
-        _score = 0;
-        _snake = new Snake(Direction.North, InitialPosition.X, InitialPosition.Y);
-    }
-
-    private void GenerateApple()
-    {
-        var x = GetRandomPositionDependingOn((int) (BrowserDimension.Width * 0.8));
-        var y = GetRandomPositionDependingOn((int) (BrowserDimension.Height * 0.8));
-
-        _apple = new Apple(x, y);
-    }
-
-    private int GetRandomPositionDependingOn(int x)
-    {
-        return new Random().Next(Ball.Size, x - Ball.Size);
-    }
-
     private void StartTimer()
     {
         aTimer = new Timer(150);
         aTimer.Elapsed += Tick;
         aTimer.Enabled = true;
     }
-
     private void Tick(object source, ElapsedEventArgs e)
     {
-        _snake?.MoveOn();
-        if (_snake != null && (_apple == null || _snake.TryEat(_apple)))
-        {
-            _score++;
-            GenerateApple();
-        }
+        _game.Tick();
         InvokeAsync(StateHasChanged);
     }
-
-    private void KeyStroked(object sender, KeyBoard.OnKeyStrokedArgs args)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_snake == null) return;
-
-        if (args.Key == KeyBoard.Key.ArrowDown) _snake.LookToThe(Direction.South);
-        if (args.Key == KeyBoard.Key.ArrowUp) _snake.LookToThe(Direction.North);
-        if (args.Key == KeyBoard.Key.ArrowLeft) _snake.LookToThe(Direction.West);
-        if (args.Key == KeyBoard.Key.ArrowRight) _snake.LookToThe(Direction.East);
-        if (args.Key == KeyBoard.Key.Space) GenerateSnake();
+        await jsRuntime.InvokeVoidAsync("setKeyBoardRef", DotNetObjectReference.Create(KeyBoard));
+        BrowserDimension = await jsRuntime.InvokeAsync<BrowserDimension>("getDimensions");
+        if (_game == null)
+        {
+            _game = new Game(BrowserDimension.Width, BrowserDimension.Height);
+            KeyBoard.OnKeyStroked += _game.KeyStroked;    
+        }
+        
     }
-
 }
 
-@if (_snake != null)
+@if (_game != null)
 {
     <div>
         <img src="/BrandBlazor_big_with_border.png" style="float:left; width:40px"/>
@@ -96,6 +58,6 @@
 
 
     <div id="theCanvas" style="position: fixed; opacity: 1; background-color: black; width: 80%; height: 80%; border: #5c2d91 2px solid;">
-        <Grid Snake="@_snake" Apple="@_apple" Score="@_score"></Grid>
+        <Grid Game="@_game"></Grid>
     </div>
 }

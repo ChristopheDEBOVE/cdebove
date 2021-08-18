@@ -18,12 +18,12 @@ namespace MyHumbleWebSiteTest
             HeadOf(sut).Y.Should().Be(0);
         }
 
-        private static Ball HeadOf(Snake sut)
+        private static BodyMember HeadOf(Snake sut)
         {
             return sut.GetParts().First();
         }
 
-        private static Ball BodyOf(Snake sut)
+        private static BodyMember BodyOf(Snake sut)
         {
             return sut.GetParts().Skip(1).First();
         }

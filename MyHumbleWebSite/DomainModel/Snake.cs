@@ -23,7 +23,7 @@ namespace MyHumbleWebSite.DomainModel
         private void Dead()
         {
             _isAlive = false;
-            foreach (var ball in body) ball.Color = "#FF8000";
+            foreach (var ball in body) ball.Necrose();
         }
 
         private bool IsLookingToTheOpositeWay(Direction direction)

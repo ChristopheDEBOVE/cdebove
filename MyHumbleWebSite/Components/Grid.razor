@@ -12,13 +12,8 @@
 @code {
 
     [Parameter]
-    public Snake Snake { get; set; }
+    public Game Game { get; set; }
 
-    [Parameter]
-    public Apple Apple { get; set; }
-
-    [Parameter]
-    public int Score { get; set; }
 
     private BECanvasComponent _canvasComponent;
     private BrowserDimension _browserDimension = new(400, 400);
@@ -37,17 +32,15 @@
         using var canvas2DContext = await _canvasComponent.CreateCanvas2DAsync();
         await canvas2DContext.ClearRectAsync(0, 0, _browserDimension.Width, _browserDimension.Height);
 
-        await canvas2DContext.FillTextAsync($"score : {Score:0000}", 15, 15);
+        await canvas2DContext.FillTextAsync($"score : {Game.Score:0000}", 15, 15);
 
 
-        await Snake.GetParts().First().DrawImageFor(canvas2DContext, _shapeToImage[Snake.GetParts().First().Shape]);
-        foreach (var ball in Snake.GetParts().Skip(1))
+        foreach (var ball in Game.ElementsToShow())
         {
-            await ball.DrawOn(canvas2DContext);
-        }
-        if (Apple != null)
-        {
-            await Apple.DrawImageFor(canvas2DContext, _shapeToImage[Apple.Shape]);
+            if (ball.Shape == Shape.SnakeBody)
+                ball.DrawOn(canvas2DContext);
+            else
+                await ball.DrawImageFor(canvas2DContext, _shapeToImage[ball.Shape]);
         }
     }
 
