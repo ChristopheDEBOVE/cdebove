@@ -6,14 +6,13 @@ namespace MyHumbleWebSite.DomainModel
 {
     public class Shape : ValueObject
     {
-        public static readonly Shape A = new("A");
-        public static readonly Shape B = new("B");
-        public static readonly Shape C = new("C");
+        public static readonly Shape Enemy1 = new("Enemy1");
+        public static readonly Shape Enemy2 = new("Enemy2");
+        public static readonly Shape Enemy3 = new("Enemy3");
         public static readonly Shape Trolling = new("TrollFace");
         public static readonly Shape SnakeHead = new("SnakeHead");
         public static readonly Shape SnakeBody = new("Body");
 
-        private static readonly Shape[] Shapes = {A, B, C};
 
         private readonly string _value;
 
@@ -24,8 +23,11 @@ namespace MyHumbleWebSite.DomainModel
 
         public static Shape GetRandomEnemiesShape()
         {
-            return Shapes[new Random().Next(Shapes.Length)];
+            // todo : remove this implicit dependency
+            return EnemiesShapes[new Random().Next(EnemiesShapes.Length)];
         }
+
+        private static readonly Shape[] EnemiesShapes = {Enemy1, Enemy2, Enemy3};
 
 
         protected override IEnumerable<object> GetEqualityComponents()

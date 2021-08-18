@@ -19,9 +19,9 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         Dictionary<Shape, ElementReference> _shapeToImage = new();
-        _shapeToImage.Add(Shape.A, angularLogo);
-        _shapeToImage.Add(Shape.B, reactLogo);
-        _shapeToImage.Add(Shape.C, vueJsLogo);
+        _shapeToImage.Add(Shape.Enemy1, angularLogo);
+        _shapeToImage.Add(Shape.Enemy2, reactLogo);
+        _shapeToImage.Add(Shape.Enemy3, vueJsLogo);
         _shapeToImage.Add(Shape.SnakeHead, blazorLogo);
         _shapeToImage.Add(Shape.Trolling, trollFace);
         await jsRuntime.InvokeVoidAsync("ResizeCanvas");

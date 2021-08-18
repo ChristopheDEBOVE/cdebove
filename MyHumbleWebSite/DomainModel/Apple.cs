@@ -12,7 +12,7 @@ namespace MyHumbleWebSite.DomainModel
         }
 
         public int Size { get; } = AppleSize;
-        private readonly static int AppleSize = 40;
+        private static readonly int AppleSize = 40;
         public string Color { get; } = "#FF0000";
         public int X { get; }
         public int Y { get; }
